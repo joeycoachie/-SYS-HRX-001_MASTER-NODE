@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#050505] text-zinc-100 antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SYS-HRX-001 :: HYROX TACTICAL ENGINE & HVO CONTROL SYSTEM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap");
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #050505;
+        color: #f4f4f5;
+      }
+
+      .font-mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      /* RA Override System State */
+      .ra-module {
+        display: none;
+      }
+
+      body.ra-active .ra-module {
+        display: block !important;
+      }
+
+      body.ra-active .ra-toggle-btn {
+        background-color: #0a0f1c !important;
+        border-color: #3b82f6 !important;
+        color: #60a5fa !important;
+      }
+
+      /* Custom Checkbox Styling */
+      input[type="checkbox"] {
+        appearance: none;
+        background-color: #050505;
+        margin: 0;
+        font: inherit;
+        color: #ffffff;
+        width: 1.125rem;
+        height: 1.125rem;
+        border: 1px solid #333333;
+        display: grid;
+        place-content: center;
+        cursor: pointer;
+        border-radius: 0px;
+      }
+
+      input[type="checkbox"]::before {
+        content: "";
+        width: 0.65em;
+        height: 0.65em;
+        transform: scale(0);
+        transition: 120ms transform ease-in-out;
+        box-shadow: inset 1em 1em #ffffff;
+        background-color: CanvasText;
+      }
+
+      input[type="checkbox"]:checked::before {
+        transform: scale(1);
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #050505;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #27272a;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #3f3f46;
+      }
+    </style>
+  </head>
+  <body
+    class="h-full flex flex-col md:flex-row overflow-hidden rounded-none selection:bg-zinc-800 selection:text-white"
+  >
+    <!-- SIDEBAR NAVIGATION & TELEMETRY -->
+    <aside
+      class="w-full md:w-80 bg-[#0a0a0a] border-r border-[#333333] flex flex-col justify-between shrink-0 h-auto md:h-full z-20"
+    >
+      <div class="p-6 space-y-6">
+        <!-- System Ident -->
+        <div class="border-b border-[#333333] pb-4">
+          <div class="flex items-center justify-between">
+            <span
+              class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase"
+              >MASTER NODE</span
+            >
+            <span
+              class="text-[10px] font-mono tracking-widest text-emerald-500 bg-emerald-950/40 px-2 py-0.5 border border-emerald-800/50"
+              >ONLINE</span
+            >
+          </div>
+          <h1 class="text-base font-bold tracking-tight text-white mt-1">
+            SYS-HRX-001
+          </h1>
+          <p class="text-xs text-zinc-400 font-mono mt-0.5">
+            HYROX TACTICAL ENGINE
+          </p>
+        </div>
+
+        <!-- Session Clock (JS Functional) -->
+        <div class="bg-[#050505] p-4 border border-[#333333] space-y-3">
+          <div class="flex justify-between items-center">
+            <span
+              class="text-[10px] font-mono text-zinc-500 uppercase tracking-wider"
+              >CHRONO TELEMETRY</span
+            >
+            <span id="timer-status" class="text-[10px] font-mono text-zinc-400"
+              >STOPPED</span
+            >
+          </div>
+          <div
+            id="timer-display"
+            class="text-3xl font-mono font-bold text-white tracking-wider text-center py-1"
+          >
+            00:00:00
+          </div>
+          <div class="grid grid-cols-3 gap-1 pt-1">
+            <button
+              onclick="startTimer()"
+              class="bg-[#111111] hover:bg-zinc-800 text-white font-mono text-[10px] py-1.5 border border-[#333333] transition-colors uppercase"
+            >
+              Start
+            </button>
+            <button
+              onclick="pauseTimer()"
+              class="bg-[#111111] hover:bg-zinc-800 text-white font-mono text-[10px] py-1.5 border border-[#333333] transition-colors uppercase"
+            >
+              Pause
+            </button>
+            <button
+              onclick="resetTimer()"
+              class="bg-[#111111] hover:bg-zinc-800 text-white font-mono text-[10px] py-1.5 border border-[#333333] transition-colors uppercase"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Global RA Override Toggle -->
+        <div>
+          <button
+            onclick="toggleRAOverride()"
+            class="ra-toggle-btn w-full bg-[#050505] hover:bg-zinc-900 text-zinc-400 font-mono text-xs py-3 px-4 border border-[#333333] transition-all flex justify-between items-center text-left"
+          >
+            <div>
+              <div class="font-bold uppercase tracking-wider text-[11px]">
+                RA Medical Override
+              </div>
+              <div class="text-[9px] text-zinc-500 mt-0.5">
+                Joint & Inflammatory Adaptations
+              </div>
+            </div>
+            <span
+              id="ra-status-tag"
+              class="text-[10px] font-mono border border-zinc-700 px-1.5 py-0.5"
+              >OFF</span
+            >
+          </button>
+        </div>
+
+        <!-- Vertical Navigation Menu -->
+        <nav class="space-y-1 pt-2">
+          <div
+            class="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-2 px-1"
+          >
+            Control Modules
+          </div>
+
+          <button
+            onclick="switchTab('tactical-engine')"
+            id="nav-tactical-engine"
+            class="nav-btn w-full text-left font-mono text-xs py-2.5 px-3 border border-[#333333] bg-[#111111] text-white flex justify-between items-center transition-colors"
+          >
+            <span>[01] TACTICAL ENGINE</span>
+            <span class="text-[10px] text-zinc-500">PERIODIZATION</span>
+          </button>
+
+          <button
+            onclick="switchTab('battle-cards')"
+            id="nav-battle-cards"
+            class="nav-btn w-full text-left font-mono text-xs py-2.5 px-3 border border-transparent text-zinc-400 hover:text-white hover:border-zinc-800 flex justify-between items-center transition-colors"
+          >
+            <span>[02] BATTLE CARDS</span>
+            <span class="text-[10px] text-zinc-500">STATIONS</span>
+          </button>
+
+          <button
+            onclick="switchTab('doubles-matrix')"
+            id="nav-doubles-matrix"
+            class="nav-btn w-full text-left font-mono text-xs py-2.5 px-3 border border-transparent text-zinc-400 hover:text-white hover:border-zinc-800 flex justify-between items-center transition-colors"
+          >
+            <span>[03] DOUBLES & RULES</span>
+            <span class="text-[10px] text-zinc-500">PENALTIES</span>
+          </button>
+
+          <button
+            onclick="switchTab('hvo-leverage')"
+            id="nav-hvo-leverage"
+            class="nav-btn w-full text-left font-mono text-xs py-2.5 px-3 border border-transparent text-zinc-400 hover:text-white hover:border-zinc-800 flex justify-between items-center transition-colors"
+          >
+            <span>[04] HVO STRATEGIC OS</span>
+            <span class="text-[10px] text-zinc-500">LEVERAGE</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- System Telemetry Footer -->
+      <div class="p-6 border-t border-[#333333] bg-[#050505] space-y-2">
+        <div class="flex justify-between text-[10px] font-mono text-zinc-500">
+          <span>DEPLOYMENT LOC</span>
+          <span class="text-zinc-300">KUALA LUMPUR</span>
+        </div>
+        <div class="flex justify-between text-[10px] font-mono text-zinc-500">
+          <span>EVENT DATE</span>
+          <span class="text-zinc-300">DEC 13, 2026</span>
+        </div>
+        <div class="flex justify-between text-[10px] font-mono text-zinc-500">
+          <span>SYSTEM OPERATOR</span>
+          <span class="text-zinc-300">JOEY (FOUNDER)</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN WORKSPACE CONTAINER -->
+    <main class="flex-1 overflow-y-auto bg-[#050505] p-4 md:p-8 space-y-8">
+      <!-- MODULE 01: TACTICAL ENGINE & PERIODIZATION -->
+      <section id="tab-tactical-engine" class="tab-content space-y-6">
+        <!-- Module Header -->
+        <div
+          class="border-b border-[#333333] pb-4 flex flex-col md:flex-row md:items-end justify-between gap-4"
+        >
+          <div>
+            <span
+              class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase"
+              >SYS-HRX-MOD-01</span
+            >
+            <h2 class="text-xl font-light text-white tracking-wide mt-1">
+              PERIODIZATION ARCHITECTURE & WEEKLY SPLIT
+            </h2>
+          </div>
+          <div
+            class="font-mono text-xs text-zinc-400 bg-[#111111] p-2 border border-[#333333]"
+          >
+            TARGET FINISH:
+            <span class="text-white font-bold">SUB-90 MIN (WOMEN OPEN)</span>
+          </div>
+        </div>
+
+        <!-- 20-Week Phase Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 font-mono">
+          <div class="bg-[#111111] border border-[#333333] p-4 space-y-2">
+            <div class="text-[10px] text-zinc-500 uppercase">
+              PHASE 1 (WEEKS 1-6)
+            </div>
+            <div class="text-sm font-bold text-white">ENGINE & ANCHORS</div>
+            <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+              Zone 2 expansion, joint bulletproofing, unilateral Wunda Chair &
+              Reformer lumbopelvic alignment.
+            </p>
+          </div>
+          <div class="bg-[#111111] border border-[#333333] p-4 space-y-2">
+            <div class="text-[10px] text-zinc-500 uppercase">
+              PHASE 2 (WEEKS 7-14)
+            </div>
+            <div class="text-sm font-bold text-white">COMPROMISED RUNNING</div>
+            <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+              Lactate buffering, station-to-run transition mechanics, posterior
+              oblique sling load integration.
+            </p>
+          </div>
+          <div class="bg-[#111111] border border-[#333333] p-4 space-y-2">
+            <div class="text-[10px] text-zinc-500 uppercase">
+              PHASE 3 (WEEKS 15-18)
+            </div>
+            <div class="text-sm font-bold text-white">RACE SIMULATOR</div>
+            <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+              75% volume race density, station handoffs, grip endurance under
+              high CNS load.
+            </p>
+          </div>
+          <div class="bg-[#111111] border border-[#333333] p-4 space-y-2">
+            <div class="text-[10px] text-zinc-500 uppercase">
+              PHASE 4 (WEEKS 19-20)
+            </div>
+            <div class="text-sm font-bold text-white">TAPER & PEAK</div>
+            <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+              50% volume reduction, neural sharpening, 6-8g/kg carb
+              supercompensation protocol.
+            </p>
+          </div>
+        </div>
+
+        <!-- Weekly Macro Template -->
+        <div class="border border-[#333333] bg-[#0a0a0a]">
+          <div
+            class="p-4 border-b border-[#333333] flex justify-between items-center"
+          >
+            <h3
+              class="text-xs font-mono tracking-widest text-zinc-400 uppercase"
+            >
+              WEEKLY OPERATIONAL SPLIT (5-DAY RUN / 3-DAY RESISTANCE)
+            </h3>
+            <span class="text-[10px] font-mono text-zinc-500"
+              >PRIORITY: RUNNING FIRST</span
+            >
+          </div>
+
+          <div class="divide-y divide-[#333333] font-mono text-xs">
+            <!-- Mon -->
+            <div class="p-4 grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
+              <span class="text-zinc-500 font-bold">MON</span>
+              <span class="text-white md:col-span-2"
+                >LOWER BODY + NEUROMUSCULAR</span
+              >
+              <span class="text-zinc-400 font-sans text-xs md:col-span-3"
+                >Heavy compound loading @ 80-85% 1RM. Back squats, walking
+                lunges, sled pushes. 3-min rest for phosphocreatine
+                resynthesis.</span
+              >
+            </div>
+            <!-- Tue -->
+            <div class="p-4 grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
+              <span class="text-zinc-500 font-bold">TUE</span>
+              <span class="text-white md:col-span-2">VO2 MAX INTERVALS</span>
+              <span class="text-zinc-400 font-sans text-xs md:col-span-3"
+                >4-6 x 4 min @ 90-95% HRmax. 3 min active recovery float.
+                Maximize stroke volume & mitochondrial density.</span
+              >
+            </div>
+            <!-- Wed -->
+            <div class="p-4 grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
+              <span class="text-zinc-500 font-bold">WED</span>
+              <span class="text-white md:col-span-2">ZONE 2 BASE ENGINE</span>
+              <span class="text-zinc-400 font-sans text-xs md:col-span-3"
+                >60-90 mins @ 60-70% HRmax. Strict nasal breathing below LT1.
+                Maximize capillary density & fat oxidation.</span
+              >
+            </div>
+            <!-- Thu -->
+            <div class="p-4 grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
+              <span class="text-zinc-500 font-bold">THU</span>
+              <span class="text-white md:col-span-2">COMPROMISED RUNNING</span>
+              <span class="text-zinc-400 font-sans text-xs md:col-span-3"
+                >1-min station efforts immediately followed by 400m race-pace
+                run. Practice settling breathing during motor strain.</span
+              >
+            </div>
+            <!-- Fri -->
+            <div class="p-4 grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
+              <span class="text-zinc-500 font-bold">FRI</span>
+              <span class="text-white md:col-span-2"
+                >UPPER BODY + ISOMETRIC GRIP</span
+              >
+              <span class="text-zinc-400 font-sans text-xs md:col-span-3"
+                >Pulling volume @ 65-75%. Lat pulldowns, farmer carries, dead
+                hangs. Build forearm flexor endurance.</span
+              >
+            </div>
+            <!-- Sat -->
+            <div class="p-4 grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
+              <span class="text-zinc-500 font-bold">SAT</span>
+              <span class="text-white md:col-span-2">THRESHOLD PACE (LT2)</span>
+              <span class="text-zinc-400 font-sans text-xs md:col-span-3"
+                >3 x 10 min @ 85-88% HRmax (2 min float recovery). Trains
+                lactate clearance pace before systemic saturation.</span
+              >
+            </div>
+            <!-- Sun -->
+            <div class="p-4 grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
+              <span class="text-zinc-500 font-bold">SUN</span>
+              <span class="text-white md:col-span-2"
+                >RECOVERY & GLYCOGEN REBUILD</span
+              >
+              <span class="text-zinc-400 font-sans text-xs md:col-span-3"
+                >Full rest or 30-min walk. High carbohydrate load (5-7g/kg).
+                Fascial remodelling & protein turnover.</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 02: BATTLE CARDS (STATION PROTOCOLS) -->
+      <section id="tab-battle-cards" class="tab-content space-y-6 hidden">
+        <div
+          class="border-b border-[#333333] pb-4 flex flex-col md:flex-row md:items-end justify-between gap-4"
+        >
+          <div>
+            <span
+              class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase"
+              >SYS-HRX-MOD-02</span
+            >
+            <h2 class="text-xl font-light text-white tracking-wide mt-1">
+              BIOMECHANICAL STATION BATTLE CARDS
+            </h2>
+          </div>
+          <div class="text-xs font-mono text-zinc-400">
+            SHOWING:
+            <span class="text-white">FEMALE DIVISION SPECIFICATIONS</span>
+          </div>
+        </div>
+
+        <!-- Station Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- CARD 1: RUNNING GAIT -->
+          <div class="bg-[#0a0a0a] border border-[#333333] p-5 space-y-4">
+            <div
+              class="flex justify-between items-start border-b border-[#333333] pb-3"
+            >
+              <div>
+                <span class="text-[10px] font-mono text-zinc-500"
+                  >STATION 00 :: 8 x 1000M</span
+                >
+                <h3 class="text-base font-bold text-white font-mono">
+                  COMPROMISED RUNNING GAIT
+                </h3>
+              </div>
+              <span
+                class="text-[10px] font-mono bg-zinc-900 border border-zinc-700 text-zinc-300 px-2 py-1"
+                >TARGET: 4:30 - 5:00 /KM</span
+              >
+            </div>
+
+            <div class="space-y-2 font-mono text-xs">
+              <label
+                class="flex items-start gap-3 p-2 bg-[#050505] border border-zinc-900 hover:border-zinc-800"
+              >
+                <input type="checkbox" class="mt-0.5 shrink-0" />
+                <span class="text-zinc-300 font-sans"
+                  >First 200m post-station: Settle breathing rhythm (3 steps
+                  inhale, 2 steps exhale).</span
+                >
+              </label>
+              <label
+                class="flex items-start gap-3 p-2 bg-[#050505] border border-zinc-900 hover:border-zinc-800"
+              >
+                <input type="checkbox" class="mt-0.5 shrink-0" />
+                <span class="text-zinc-300 font-sans"
+                  >Maintain slight posterior pelvic tilt to engage Deep Front
+                  Line and protect L4-L5.</span
+                >
+              </label>
+            </div>
+
+            <div class="space-y-2">
+              <div
+                class="p-3 bg-[#111111] border-l-2 border-zinc-500 text-xs font-mono"
+              >
+                <span class="text-zinc-500 block text-[9px]"
+                  >WOLF CUE (BIOMECHANICS)</span
+                >
+                <span class="text-zinc-200"
+                  >Engage Gluteus Medius to prevent pelvic drop during
+                  single-leg stance phase. Avoid quad-dominant braking
+                  forces.</span
+                >
+              </div>
+              <div
+                class="p-3 bg-[#111111] border-l-2 border-white text-xs font-mono"
+              >
+                <span class="text-zinc-400 block text-[9px]"
+                  >SHEPHERD CUE (IMAGERY)</span
+                >
+                <span class="text-white"
+                  >"Keep your headlights level. Drop your shoulders, unclench
+                  your jaws."</span
+                >
+              </div>
+            </div>
+
+            <div
+              class="p-3 bg-[#110505] border border-red-900/50 text-xs font-mono text-red-300"
+            >
+              <span class="text-red-500 font-bold block text-[9px]"
+                >SAFETY GATE (QA FAIL)</span
+              >
+              Lumbar spine extension shear under severe fatigue. If anterior
+              pelvic tilt collapses, drop pace by 15s/km and force exhalation.
+            </div>
+
+            <div
+              class="ra-module p-3 bg-[#0a0f1c] border border-blue-900/50 text-xs font-mono text-blue-300"
+            >
+              <span class="text-blue-400 font-bold block text-[9px]"
+                >RA MEDICAL OVERRIDE</span
+              >
+              Reduce high-impact heel strike. Shift to midfoot strike;
+              transition to cadence of 175-180 bpm to decrease knee joint
+              torque.
+            </div>
+          </div>
+
+          <!-- CARD 2: SKIERG -->
+          <div class="bg-[#0a0a0a] border border-[#333333] p-5 space-y-4">
+            <div
+              class="flex justify-between items-start border-b border-[#333333] pb-3"
+            >
+              <div>
+                <span class="text-[10px] font-mono text-zinc-500"
+                  >STATION 01 :: 1000M</span
+                >
+                <h3 class="text-base font-bold text-white font-mono">
+                  SKIERG ENGAGEMENT
+                </h3>
+              </div>
+              <span
+                class="text-[10px] font-mono bg-zinc-900 border border-zinc-700 text-zinc-300 px-2 py-1"
+                >TARGET: 4:10 - 4:30</span
+              >
+            </div>
+
+            <div class="space-y-2 font-mono text-xs">
+              <label
+                class="flex items-start gap-3 p-2 bg-[#050505] border border-zinc-900 hover:border-zinc-800"
+              >
+                <input type="checkbox" class="mt-0.5 shrink-0" />
+                <span class="text-zinc-300 font-sans"
+                  >Hinge at hips; bring ribs toward pelvis using body weight to
+                  pull handles down.</span
+                >
+              </label>
+              <label
+                class="flex items-start gap-3 p-2 bg-[#050505] border border-zinc-900 hover:border-zinc-800"
+              >
+                <input type="checkbox" class="mt-0.5 shrink-0" />
+                <span class="text-zinc-300 font-sans"
+                  >Keep elbows bent at 90 degrees then lock; do not
+                  over-squat.</span
+                >
+              </label>
+            </div>
+
+            <div class="space-y-2">
+              <div
+                class="p-3 bg-[#111111] border-l-2 border-zinc-500 text-xs font-mono"
+              >
+                <span class="text-zinc-500 block text-[9px]"
+                  >WOLF CUE (BIOMECHANICS)</span
+                >
+                <span class="text-zinc-200"
+                  >Drive via Latissimus Dorsi and Rectus Abdominis. Pulling past
+                  hips with triceps alone wastes upper body capacity.</span
+                >
+              </div>
+              <div
+                class="p-3 bg-[#111111] border-l-2 border-white text-xs font-mono"
+              >
+                <span class="text-zinc-400 block text-[9px]"
+                  >SHEPHERD CUE (IMAGERY)</span
+                >
+                <span class="text-white"
+                  >"Fall into the handles. Use body weight, not arm
+                  power."</span
+                >
+              </div>
+            </div>
+
+            <div
+              class="p-3 bg-[#110505] border border-red-900/50 text-xs font-mono text-red-300"
+            >
+              <span class="text-red-500 font-bold block text-[9px]"
+                >SAFETY GATE (QA FAIL)</span
+              >
+              Over-squatting burns quadriceps needed for the Sled Push. If knees
+              flex past 90 degrees, reset hips higher immediately.
+            </div>
+
+            <div
+              class="ra-module p-3 bg-[#0a0f1c] border border-blue-900/50 text-xs font-mono text-blue-300"
+            >
+              <span class="text-blue-400 font-bold block text-[9px]"
+                >RA MEDICAL OVERRIDE</span
+              >
+              Limit aggressive spinal flexion at the bottom range. Keep thoracic
+              spine neutral and finish pull at hip level.
+            </div>
+          </div>
+
+          <!-- CARD 3: SLED PUSH -->
+          <div class="bg-[#0a0a0a] border border-[#333333] p-5 space-y-4">
+            <div
+              class="flex justify-between items-start border-b border-[#333333] pb-3"
+            >
+              <div>
+                <span class="text-[10px] font-mono text-zinc-500"
+                  >STATION 02 :: 4 x 12.5M</span
+                >
+                <h3 class="text-base font-bold text-white font-mono">
+                  SLED PUSH
+                </h3>
+              </div>
+              <span
+                class="text-[10px] font-mono bg-zinc-900 border border-zinc-700 text-zinc-300 px-2 py-1"
+                >OPEN: 102KG | PRO: 152KG</span
+              >
+            </div>
+
+            <div class="space-y-2 font-mono text-xs">
+              <label
+                class="flex items-start gap-3 p-2 bg-[#050505] border border-zinc-900 hover:border-zinc-800"
+              >
+                <input type="checkbox" class="mt-0.5 shrink-0" />
+                <span class="text-zinc-300 font-sans"
+                  >Arms fully extended, locked shoulder girdle, low center of
+                  mass.</span
+                >
+              </label>
+              <label
+                class="flex items-start gap-3 p-2 bg-[#050505] border border-zinc-900 hover:border-zinc-800"
+              >
+                <input type="checkbox" class="mt-0.5 shrink-0" />
+                <span class="text-zinc-300 font-sans"
+                  >Mandatory 2-second breather at each 12.5m turn to clear
+                  lactic acid[cite: 1].</span
+                >
+              </label>
+            </div>
+
+            <div class="space-y-2">
+              <div
+                class="p-3 bg-[#111111] border-l-2 border-zinc-500 text-xs font-mono"
+              >
+                <span class="text-zinc-500 block text-[9px]"
+                  >WOLF CUE (BIOMECHANICS)</span
+                >
+                <span class="text-zinc-200"
+                  >Force vector through mid-foot and heel to engage posterior
+                  chain (Glute Max/Hamstrings). Toe-pushing cooks calves.</span
+                >
+              </div>
+              <div
+                class="p-3 bg-[#111111] border-l-2 border-white text-xs font-mono"
+              >
+                <span class="text-zinc-400 block text-[9px]"
+                  >SHEPHERD CUE (IMAGERY)</span
+                >
+                <span class="text-white"
+                  >"Drive the earth behind you; do not push the metal."</span
+                >
+              </div>
+            </div>
+
+            <div
+              class="p-3 bg-[#110505] border border-red-900/50 text-xs font-mono text-red-300"
+            >
+              <span class="text-red-500 font-bold block text-[9px]"
+                >SAFETY GATE (QA FAIL)</span
+              >
+              Loss of pelvic alignment (lumbar arching). If spine hyperextends
+              under heavy load, pause 3s, re-brace abs before driving.
+            </div>
+
+            <div
+              class="ra-module p-3 bg-[#0a0f1c] border border-blue-900/50 text-xs font-mono text-blue-300"
+            >
+              <span class="text-blue-400 font-bold block text-[9px]"
+                >RA MEDICAL OVERRIDE</span
+              >
+              Higher handle grip attachment to reduce hip flexion angle and
+              limit shear forces across SI joint.
+            </div>
+          </div>
+
+          <!-- CARD 4: SLED PULL -->
+          <div class="bg-[#0a0a0a] border border-[#333333] p-5 space-y-4">
+            <div
+              class="flex justify-between items-start border-b border-[#333333] pb-3"
+            >
+              <div>
+                <span class="text-[10px] font-mono text-zinc-500"
+                  >STATION 03 :: 4 x 12.5M</span
+                >
+                <h3 class="text-base font-bold text-white font-mono">
+                  SLED PULL
+                </h3>
+              </div>
+              <span
+                class="text-[10px] font-mono bg-zinc-900 border border-zinc-700 text-zinc-300 px-2 py-1"
+                >OPEN: 78KG | PRO: 103KG</span
+              >
+            </div>
+
+            <div class="space-y-2 font-mono text-xs">
+              <label
+                class="flex items-start gap-3 p-2 bg-[#050505] border border-zinc-900 hover:border-zinc-800"
+              >
+                <input type="checkbox" class="mt-0.5 shrink-0" />
+                <span class="text-zinc-300 font-sans"
+                  >Stand at back of box, lock lats, step backward using
+                  bodyweight[cite: 1].</span
+                >
+              </label>
+              <label
+                class="flex items-start gap-3 p-2 bg-[#050505] border border-zinc-900 hover:border-zinc-800"
+              >
+                <input type="checkbox" class="mt-0.5 shrink-0" />
+                <span class="text-zinc-300 font-sans"
+                  >Keep feet close together to optimize leverage during backward
+                  stride[cite: 1].</span
+                >
+              </label>
+            </div>
+
+            <div class="space-y-2">
+              <div
+                class="p-3 bg-[#111111] border-l-2 border-zinc-500 text-xs font-mono"
+              >
+                <span class="text-zinc-500 block text-[9px]"
+                  >WOLF CUE (BIOMECHANICS)</span
+                >
+                <span class="text-zinc-200"
+                  >Engage Posterior Oblique Sling (Right Lat to Left Glute).
+                  Scapular depression reduces forearm grip load by 30%.</span
+                >
+              </div>
+              <div
+                class="p-3 bg-[#111111] border-l-2 border-white text-xs font-mono"
+              >
+                <span class="text-zinc-400 block text-[9px]"
+                  >SHEPHERD CUE (IMAGERY)</span
+                >
+                <span class="text-white"
+                  >"Sit back into an invisible chair. Let your skeleton hold the
+                  weight."</span
+                >
+              </div>
+            </div>
+
+            <div
+              class="p-3 bg-[#110505] border border-red-900/50 text-xs font-mono text-red-300"
+            >
+              <span class="text-red-500 font-bold block text-[9px]"
+                >SAFETY GATE (QA FAIL)</span
+              >
+              Scapular elevation (shrugging shoulders into ears). Neck scalenes
+              take over breathing. Force depression of scapulae.
+            </div>
+
+            <div
+              class="ra-module p-3 bg-[#0a0f1c] border border-blue-900/50 text-xs font-mono text-blue-300"
+            >
+              <span class="text-blue-400 font-bold block text-[9px]"
+                >RA MEDICAL OVERRIDE</span
+              >
+              Use waist belt attachment option if acute grip or wrist
+              inflammation flares.
+            </div>
+          </div>
+
+          <!-- CARD 5: BURPEE BROAD JUMPS -->
+          <div class="bg-[#0a0a0a] border border-[#333333] p-5 space-y-4">
+            <div
+              class="flex justify-between items-start border-b border-[#333333] pb-3"
+            >
+              <div>
+                <span class="text-[10px] font-mono text-zinc-500"
+                  >STATION 04 :: 80M</span
+                >
+                <h3 class="text-base font-bold text-white font-mono">
+                  BURPEE BROAD JUMPS
+                </h3>
+              </div>
+              <span
+                class="text-[10px] font-mono bg-zinc-900 border border-zinc-700 text-zinc-300 px-2 py-1"
+                >TARGET: 5:00 - 5:30</span
+              >
+            </div>
+
+            <div class="space-y-2 font-mono text-xs">
+              <label
+                class="flex items-start gap-3 p-2 bg-[#050505] border border-zinc-900 hover:border-zinc-800"
+              >
+                <input type="checkbox" class="mt-0.5 shrink-0" />
+                <span class="text-zinc-300 font-sans"
+                  >Feet stay wide; fall directly to floor without fighting
+                  gravity[cite: 1].</span
+                >
+              </label>
+              <label
+                class="flex items-start gap-3 p-2 bg-[#050505] border border-zinc-900 hover:border-zinc-800"
+              >
+                <input type="checkbox" class="mt-0.5 shrink-0" />
+                <span class="text-zinc-300 font-sans"
+                  >Stay low out of burpee before launching into horizontal
+                  jump[cite: 1].</span
+                >
+              </label>
+            </div>
+
+            <div class="space-y-2">
+              <div
+                class="p-3 bg-[#111111] border-l-2 border-zinc-500 text-xs font-mono"
+              >
+                <span class="text-zinc-500 block text-[9px]"
+                  >WOLF CUE (BIOMECHANICS)</span
+                >
+                <span class="text-zinc-200"
+                  >Horizontal force vector transfer over vertical jump
+                  height[cite: 1]. Step up with wide base to save hip flexor
+                  effort[cite: 1].</span
+                >
+              </div>
+              <div
+                class="p-3 bg-[#111111] border-l-2 border-white text-xs font-mono"
+              >
+                <span class="text-zinc-400 block text-[9px]"
+                  >SHEPHERD CUE (IMAGERY)</span
+                >
+                <span class="text-white"
+                  >"Skim the surface like a flat stone across water."</span
+                >
+              </div>
+            </div>
+
+            <div
+              class="p-3 bg-[#110505] border border-red-900/50 text-xs font-mono text-red-300"
+            >
+              <span class="text-red-500 font-bold block text-[9px]"
+                >SAFETY GATE (QA FAIL)</span
+              >
+              Bounding jumping out of deep squat causes rapid CNS spike. If
+              heart rate hits redline, step forward out of burpee[cite: 1].
+            </div>
+
+            <div
+              class="ra-module p-3 bg-[#0a0f1c] border border-blue-900/50 text-xs font-mono text-blue-300"
+            >
+              <span class="text-blue-400 font-bold block text-[9px]"
+                >RA MEDICAL OVERRIDE</span
+              >
+              Step-back and step-up protocol mandatory. Eliminate plyometric
+              impact on landing; broad jump with soft knees.
+            </div>
+          </div>
+
+          <!-- CARD 6: WALL BALLS -->
+          <div class="bg-[#0a0a0a] border border-[#333333] p-5 space-y-4">
+            <div
+              class="flex justify-between items-start border-b border-[#333333] pb-3"
+            >
+              <div>
+                <span class="text-[10px] font-mono text-zinc-500"
+                  >STATION 08 :: 100 REPS</span
+                >
+                <h3 class="text-base font-bold text-white font-mono">
+                  WALL BALLS
+                </h3>
+              </div>
+              <span
+                class="text-[10px] font-mono bg-zinc-900 border border-zinc-700 text-zinc-300 px-2 py-1"
+                >OPEN: 4KG | PRO: 6KG</span
+              >
+            </div>
+
+            <div class="space-y-2 font-mono text-xs">
+              <label
+                class="flex items-start gap-3 p-2 bg-[#050505] border border-zinc-900 hover:border-zinc-800"
+              >
+                <input type="checkbox" class="mt-0.5 shrink-0" />
+                <span class="text-zinc-300 font-sans"
+                  >Descend into squat while ball is still falling; catch low in
+                  motion[cite: 1].</span
+                >
+              </label>
+              <label
+                class="flex items-start gap-3 p-2 bg-[#050505] border border-zinc-900 hover:border-zinc-800"
+              >
+                <input type="checkbox" class="mt-0.5 shrink-0" />
+                <span class="text-zinc-300 font-sans"
+                  >Pre-planned rep sets: 40-30-30 or 25-25-25-25[cite: 1]. Do
+                  not go to failure[cite: 1].</span
+                >
+              </label>
+            </div>
+
+            <div class="space-y-2">
+              <div
+                class="p-3 bg-[#111111] border-l-2 border-zinc-500 text-xs font-mono"
+              >
+                <span class="text-zinc-500 block text-[9px]"
+                  >WOLF CUE (BIOMECHANICS)</span
+                >
+                <span class="text-zinc-200"
+                  >Thoracic spine extension maintained under fatigue. Hip drive
+                  transfers kinetic energy to target, saving deltoids.</span
+                >
+              </div>
+              <div
+                class="p-3 bg-[#111111] border-l-2 border-white text-xs font-mono"
+              >
+                <span class="text-zinc-400 block text-[9px]"
+                  >SHEPHERD CUE (IMAGERY)</span
+                >
+                <span class="text-white"
+                  >"Catch the ball like water filling a bucket. Smooth, fluid,
+                  continuous flow."</span
+                >
+              </div>
+            </div>
+
+            <div
+              class="p-3 bg-[#110505] border border-red-900/50 text-xs font-mono text-red-300"
+            >
+              <span class="text-red-500 font-bold block text-[9px]"
+                >SAFETY GATE (QA FAIL)</span
+              >
+              Catching ball standing still and then squatting doubles the
+              mechanical load[cite: 1]. Force descent during ball drop.
+            </div>
+
+            <div
+              class="ra-module p-3 bg-[#0a0f1c] border border-blue-900/50 text-xs font-mono text-blue-300"
+            >
+              <span class="text-blue-400 font-bold block text-[9px]"
+                >RA MEDICAL OVERRIDE</span
+              >
+              Reduce squat depth slightly above parallel if patellofemoral
+              tracking pain occurs; ensure elbows stay tucked.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 03: DOUBLES STRATEGY & PENALTY MATRIX -->
+      <section id="tab-doubles-matrix" class="tab-content space-y-6 hidden">
+        <div
+          class="border-b border-[#333333] pb-4 flex flex-col md:flex-row md:items-end justify-between gap-4"
+        >
+          <div>
+            <span
+              class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase"
+              >SYS-HRX-MOD-03</span
+            >
+            <h2 class="text-xl font-light text-white tracking-wide mt-1">
+              DOUBLES DELEGATION & PENALTY AUDIT
+            </h2>
+          </div>
+          <div class="text-xs font-mono text-zinc-400">
+            RULES COMPLIANCE:
+            <span class="text-white">HYROX RULEBOOK 2026</span>
+          </div>
+        </div>
+
+        <!-- Weight Standards Table -->
+        <div class="border border-[#333333] bg-[#0a0a0a]">
+          <div class="p-4 border-b border-[#333333]">
+            <h3
+              class="text-xs font-mono tracking-widest text-zinc-400 uppercase"
+            >
+              OFFICIAL WEIGHT STANDARDS BY DIVISION
+            </h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left font-mono text-xs border-collapse">
+              <thead>
+                <tr
+                  class="border-b border-[#333333] text-zinc-500 bg-[#050505]"
+                >
+                  <th class="p-3">STATION</th>
+                  <th class="p-3">WOMEN OPEN</th>
+                  <th class="p-3">WOMEN PRO</th>
+                  <th class="p-3">MEN OPEN</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-[#333333] text-zinc-300">
+                <tr>
+                  <td class="p-3 font-bold text-white">Sled Push</td>
+                  <td class="p-3">102 kg (incl. sled)</td>
+                  <td class="p-3">152 kg (incl. sled)</td>
+                  <td class="p-3">152 kg (incl. sled)</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold text-white">Sled Pull</td>
+                  <td class="p-3">78 kg (incl. sled)</td>
+                  <td class="p-3">103 kg (incl. sled)</td>
+                  <td class="p-3">103 kg (incl. sled)</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold text-white">Farmers Carry</td>
+                  <td class="p-3">2 x 16 kg</td>
+                  <td class="p-3">2 x 24 kg</td>
+                  <td class="p-3">2 x 24 kg</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold text-white">Sandbag Lunges</td>
+                  <td class="p-3">10 kg</td>
+                  <td class="p-3">20 kg</td>
+                  <td class="p-3">20 kg</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold text-white">Wall Balls</td>
+                  <td class="p-3">4 kg (100 reps)</td>
+                  <td class="p-3">6 kg (100 reps)</td>
+                  <td class="p-3">6 kg (100 reps)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Penalty Zones & DQ Matrix -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono text-xs">
+          <!-- Penalties -->
+          <div class="bg-[#0a0a0a] border border-[#333333] p-5 space-y-3">
+            <div
+              class="border-b border-[#333333] pb-2 text-red-400 font-bold uppercase"
+            >
+              CRITICAL PENALTY ZONES
+            </div>
+            <ul class="space-y-2 text-zinc-300 font-sans">
+              <li class="p-2 bg-[#050505] border border-zinc-900">
+                <strong class="text-white font-mono">Sled Push/Pull:</strong>
+                Missing a length or not getting sled fully across white line =
+                3-minute time penalty per length.
+              </li>
+              <li class="p-2 bg-[#050505] border border-zinc-900">
+                <strong class="text-white font-mono">Sandbag Lunges:</strong>
+                Failing to stand fully upright at the top of each lunge = Rep
+                invalidation / Time penalty.
+              </li>
+              <li class="p-2 bg-[#050505] border border-zinc-900">
+                <strong class="text-white font-mono">Burpee Broad Jump:</strong>
+                Jumping over line before chest contacts floor = Rep
+                invalidation.
+              </li>
+              <li class="p-2 bg-[#050505] border border-zinc-900">
+                <strong class="text-white font-mono"
+                  >Roxzone Navigation:</strong
+                >
+                Standing around or exiting in wrong direction = Hygiene Time
+                Penalty.
+              </li>
+            </ul>
+          </div>
+
+          <!-- Disqualification Conditions -->
+          <div class="bg-[#0a0a0a] border border-[#333333] p-5 space-y-3">
+            <div
+              class="border-b border-[#333333] pb-2 text-red-500 font-bold uppercase"
+            >
+              DISQUALIFICATION (DQ) CONDITIONS
+            </div>
+            <ul class="space-y-2 text-zinc-300 font-sans">
+              <li
+                class="p-2 bg-[#110505] border border-red-900/50 text-red-200"
+              >
+                <strong class="text-white font-mono">Sandbag Drop:</strong>
+                Dropping the sandbag bag twice during lunges = AUTOMATIC DQ.
+              </li>
+              <li
+                class="p-2 bg-[#110505] border border-red-900/50 text-red-200"
+              >
+                <strong class="text-white font-mono">Wave Sequence:</strong>
+                Starting in the wrong start wave = AUTOMATIC DQ.
+              </li>
+              <li
+                class="p-2 bg-[#110505] border border-red-900/50 text-red-200"
+              >
+                <strong class="text-white font-mono"
+                  >Missing Lap/Station:</strong
+                >
+                Skipping a 1km running lap or complete workout station =
+                AUTOMATIC DQ.
+              </li>
+              <li
+                class="p-2 bg-[#110505] border border-red-900/50 text-red-200"
+              >
+                <strong class="text-white font-mono">Station Order:</strong>
+                Completing stations out of required operational sequence =
+                AUTOMATIC DQ.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 04: HVO STRATEGIC OS & POLYMATH LEVERAGE -->
+      <section id="tab-hvo-leverage" class="tab-content space-y-6 hidden">
+        <div
+          class="border-b border-[#333333] pb-4 flex flex-col md:flex-row md:items-end justify-between gap-4"
+        >
+          <div>
+            <span
+              class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase"
+              >SYS-HRX-MOD-04</span
+            >
+            <h2 class="text-xl font-light text-white tracking-wide mt-1">
+              HIGH VALUE OPERATIONS (HVO) & SYSTEMS THINKING
+            </h2>
+          </div>
+          <div class="text-xs font-mono text-zinc-400">
+            PARADIGM:
+            <span class="text-white"
+              >FIRST PRINCIPLES & ASYMMETRIC LEVERAGE</span
+            >
+          </div>
+        </div>
+
+        <!-- Mental Models Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Model 1 -->
+          <div class="bg-[#0a0a0a] border border-[#333333] p-5 space-y-3">
+            <div class="text-[10px] font-mono text-zinc-500">
+              MODEL 01 // ELON MUSK
+            </div>
+            <h3 class="text-sm font-bold text-white font-mono uppercase">
+              First Principles Deconstruction
+            </h3>
+            <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+              Boil every operational problem down to its most fundamental
+              truths. In Hyrox, fitness is not an abstract concept; it is oxygen
+              transport, glycogen management, and fascial force transmission. In
+              business, do not copy existing studio packages—unbundle the
+              biomechanical result and sell the engine architecture.
+            </p>
+          </div>
+
+          <!-- Model 2 -->
+          <div class="bg-[#0a0a0a] border border-[#333333] p-5 space-y-3">
+            <div class="text-[10px] font-mono text-zinc-500">
+              MODEL 02 // NAVAL RAVIKANT
+            </div>
+            <h3 class="text-sm font-bold text-white font-mono uppercase">
+              Permissionless Leverage
+            </h3>
+            <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+              Capital and labor are permissioned leverage. Code, content, and
+              systemized IP are permissionless leverage. Build this HYROX
+              training engine once as a standardized software UI/protocol, then
+              deploy it infinitely to coaching clients without increasing
+              marginal time expenditure.
+            </p>
+          </div>
+
+          <!-- Model 3 -->
+          <div class="bg-[#0a0a0a] border border-[#333333] p-5 space-y-3">
+            <div class="text-[10px] font-mono text-zinc-500">
+              MODEL 03 // JEFF BEZOS
+            </div>
+            <h3 class="text-sm font-bold text-white font-mono uppercase">
+              Two-Way Door Decisions
+            </h3>
+            <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+              Distinguish between irreversible (Type 1) and reversible (Type 2)
+              decisions. Experiment rapidly with client intake UI, pricing
+              tiers, and partnership models. If a partner structure fails, step
+              back through the door. Only lock down immutable frameworks when
+              biomechanical safety is at stake.
+            </p>
+          </div>
+        </div>
+
+        <!-- Strategic Frameworks for Ecosystem Scale -->
+        <div class="border border-[#333333] bg-[#0a0a0a] p-6 space-y-4">
+          <h3
+            class="text-xs font-mono tracking-widest text-zinc-400 uppercase border-b border-[#333333] pb-2"
+          >
+            COLLABORATIVE BORROWING & HIGH-VALUE SCALE FRAMEWORK
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans text-xs">
+            <div class="space-y-2">
+              <h4 class="font-mono text-white font-bold">
+                1. Structured Borrowing Protocols
+              </h4>
+              <p class="text-zinc-400 leading-relaxed">
+                Do not build infrastructure from zero. Utilize elite frameworks
+                (STOTT Pilates alignment, Hyrox race data, Herbalife metabolic
+                buffering) and cross-pollinate them. Combine Pilates lumbopelvic
+                stabilization with heavy compromised endurance to create an
+                unassailable category-of-one offering.
+              </p>
+            </div>
+            <div class="space-y-2">
+              <h4 class="font-mono text-white font-bold">
+                2. HVO Partnership Negotiation
+              </h4>
+              <p class="text-zinc-400 leading-relaxed">
+                When entering high-value operations or studio partnerships, do
+                not offer labor hours. Offer system architecture. Retain
+                ownership of the core digital assets (the UI, the battle cards,
+                the periodization engines) while leasing execution rights to
+                host facilities.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- JAVASCRIPT CONTROL LOGIC -->
+    <script>
+      // Tab Navigation Logic
+      function switchTab(tabId) {
+        const tabs = document.querySelectorAll(".tab-content");
+        tabs.forEach((tab) => tab.classList.add("hidden"));
+
+        const selectedTab = document.getElementById("tab-" + tabId);
+        if (selectedTab) {
+          selectedTab.classList.remove("hidden");
+        }
+
+        const navBtns = document.querySelectorAll(".nav-btn");
+        navBtns.forEach((btn) => {
+          btn.classList.remove("bg-[#111111]", "text-white");
+          btn.classList.add("text-zinc-400", "border-transparent");
+        });
+
+        const activeBtn = document.getElementById("nav-" + tabId);
+        if (activeBtn) {
+          activeBtn.classList.add("bg-[#111111]", "text-white");
+          activeBtn.classList.remove("text-zinc-400", "border-transparent");
+        }
+      }
+
+      // Global RA Override Toggle Logic
+      function toggleRAOverride() {
+        document.body.classList.toggle("ra-active");
+        const tag = document.getElementById("ra-status-tag");
+        if (document.body.classList.contains("ra-active")) {
+          tag.innerText = "ACTIVE";
+          tag.classList.remove("border-zinc-700");
+          tag.classList.add("border-blue-500", "text-blue-400");
+        } else {
+          tag.innerText = "OFF";
+          tag.classList.remove("border-blue-500", "text-blue-400");
+          tag.classList.add("border-zinc-700");
+        }
+      }
+
+      // Session Stopwatch/Timer Logic
+      let timerInterval = null;
+      let secondsElapsed = 0;
+
+      function startTimer() {
+        if (timerInterval) return;
+        document.getElementById("timer-status").innerText = "RUNNING";
+        document
+          .getElementById("timer-status")
+          .classList.remove("text-zinc-400");
+        document
+          .getElementById("timer-status")
+          .classList.add("text-emerald-400");
+
+        timerInterval = setInterval(() => {
+          secondsElapsed++;
+          updateTimerDisplay();
+        }, 1000);
+      }
+
+      function pauseTimer() {
+        if (!timerInterval) return;
+        clearInterval(timerInterval);
+        timerInterval = null;
+        document.getElementById("timer-status").innerText = "PAUSED";
+        document
+          .getElementById("timer-status")
+          .classList.remove("text-emerald-400");
+        document.getElementById("timer-status").classList.add("text-amber-400");
+      }
+
+      function resetTimer() {
+        pauseTimer();
+        secondsElapsed = 0;
+        updateTimerDisplay();
+        document.getElementById("timer-status").innerText = "STOPPED";
+        document
+          .getElementById("timer-status")
+          .classList.remove("text-amber-400", "text-emerald-400");
+        document.getElementById("timer-status").classList.add("text-zinc-400");
+      }
+
+      function updateTimerDisplay() {
+        const hrs = String(Math.floor(secondsElapsed / 3600)).padStart(2, "0");
+        const mins = String(Math.floor((secondsElapsed % 3600) / 60)).padStart(
+          2,
+          "0"
+        );
+        const secs = String(secondsElapsed % 60).padStart(2, "0");
+        document.getElementById(
+          "timer-display"
+        ).innerText = `${hrs}:${mins}:${secs}`;
+      }
+    </script>
+  </body>
+</html>
