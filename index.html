@@ -77,6 +77,38 @@
       ::-webkit-scrollbar-thumb:hover {
         background: #3f3f46;
       }
+
+      input,
+      select {
+        background-color: transparent;
+        border-bottom: 1px solid #333333;
+        color: #ffffff;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        padding-bottom: 0.25rem;
+        width: 100%;
+        outline: none;
+        transition: border-color 0.2s;
+        appearance: none;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: #ffffff;
+      }
+
+      input::placeholder {
+        color: #52525b;
+      }
+
+      .locked {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+
+      .ledger-row:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
     </style>
   </head>
   <body
@@ -210,6 +242,15 @@
           >
             <span>[04] HVO STRATEGIC OS</span>
             <span class="text-[10px] text-zinc-500">LEVERAGE</span>
+          </button>
+
+          <button
+            onclick="switchTab('telemetry-gates')"
+            id="nav-telemetry-gates"
+            class="nav-btn w-full text-left font-mono text-xs py-2.5 px-3 border border-transparent text-zinc-400 hover:text-white hover:border-zinc-800 flex justify-between items-center transition-colors"
+          >
+            <span>[05] TELEMETRY & GATES</span>
+            <span class="text-[10px] text-zinc-500">PULSE</span>
           </button>
         </nav>
       </div>
@@ -1196,12 +1237,319 @@
           </div>
         </div>
       </section>
+
+      <!-- MODULE 05: TELEMETRY & GATES -->
+      <section id="tab-telemetry-gates" class="tab-content space-y-6 hidden">
+        <div class="grid grid-cols-1 xl:grid-cols-[280px_minmax(0,1fr)] gap-6">
+          <aside class="bg-[#020202] border border-[#1a1a1a] p-6">
+            <div
+              class="flex justify-between items-start mb-8 border-b border-[#1a1a1a] pb-4"
+            >
+              <div>
+                <h1
+                  class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-1"
+                >
+                  Log Intake
+                </h1>
+                <h2
+                  class="text-sm font-mono text-white font-bold tracking-wider"
+                >
+                  SYS-HRX-LOG
+                </h2>
+                <p class="text-[10px] font-mono text-zinc-600 mt-1">
+                  LOCAL TELEMETRY NODE
+                </p>
+              </div>
+              <span
+                class="text-[10px] font-mono text-emerald-500 tracking-widest"
+                >OFFLINE MODE</span
+              >
+            </div>
+
+            <div class="mb-4">
+              <h3
+                class="text-[10px] font-mono text-zinc-500 tracking-widest mb-4"
+              >
+                ACTIVE OPERATOR
+              </h3>
+              <div class="space-y-3 text-xs font-mono">
+                <div
+                  class="flex justify-between items-center border-b border-[#1a1a1a] pb-2"
+                >
+                  <span class="text-zinc-600">ID:</span>
+                  <div class="w-44">
+                    <select
+                      id="operator-id"
+                      class="text-right text-white font-bold cursor-pointer"
+                      onchange="toggleOperatorInput()"
+                    >
+                      <option value="FOUNDER-01" class="bg-[#0a0a0a]">
+                        FOUNDER-01
+                      </option>
+                      <option value="PARTNER-01" class="bg-[#0a0a0a]">
+                        PARTNER-01
+                      </option>
+                      <option value="OTHERS" class="bg-[#0a0a0a]">
+                        OTHERS
+                      </option>
+                    </select>
+                    <input
+                      id="operator-custom"
+                      class="mt-2 text-white font-bold hidden"
+                      placeholder="Enter operator name"
+                    />
+                  </div>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-zinc-600">STATUS:</span>
+                  <span class="text-emerald-500">PHASE 1 ACTIVE</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-zinc-600">BIOMECH BASE:</span>
+                  <span class="text-white">PILATES/STOTT</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <main class="flex-1 flex flex-col justify-between">
+            <div class="space-y-12">
+              <section>
+                <div class="border-b border-[#333333] pb-4 mb-6">
+                  <span
+                    class="text-[10px] font-mono tracking-widest text-blue-500 uppercase"
+                    >SYSTEMIC AUDIT</span
+                  >
+                  <h2 class="text-xl font-light text-white tracking-wide mt-1">
+                    DIAGNOSTIC FAILURE THRESHOLDS
+                  </h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="bg-[#0a0a0a] border border-[#1a1a1a] p-5">
+                    <label
+                      class="block text-[10px] font-mono text-zinc-500 uppercase mb-3"
+                      >Max Aerobic Capacity (Nasal)</label
+                    >
+                    <div class="flex items-center gap-2 mb-2">
+                      <input
+                        id="diag-bpm"
+                        type="number"
+                        placeholder="e.g. 145"
+                        class="text-lg font-bold"
+                      />
+                      <span class="text-xs font-mono text-zinc-600">BPM</span>
+                    </div>
+                    <p class="text-[9px] font-mono text-zinc-600">
+                      HR at exact point of forced mouth exhalation.
+                    </p>
+                  </div>
+                  <div class="bg-[#0a0a0a] border border-[#1a1a1a] p-5">
+                    <label
+                      class="block text-[10px] font-mono text-zinc-500 uppercase mb-3"
+                      >Anterior Sling Collapse</label
+                    >
+                    <div class="flex items-center gap-2 mb-2">
+                      <input
+                        id="diag-load"
+                        type="number"
+                        placeholder="e.g. 85"
+                        class="text-lg font-bold"
+                      />
+                      <span class="text-xs font-mono text-zinc-600">KG</span>
+                    </div>
+                    <p class="text-[9px] font-mono text-zinc-600">
+                      Load at exact point of lumbar extension leak.
+                    </p>
+                  </div>
+                  <div class="bg-[#0a0a0a] border border-[#1a1a1a] p-5">
+                    <label
+                      class="block text-[10px] font-mono text-zinc-500 uppercase mb-3"
+                      >Scapular Endurance Limit</label
+                    >
+                    <div class="flex items-center gap-2 mb-2">
+                      <input
+                        id="diag-time"
+                        type="text"
+                        placeholder="MM:SS"
+                        class="text-lg font-bold"
+                      />
+                      <span class="text-xs font-mono text-zinc-600">TIME</span>
+                    </div>
+                    <p class="text-[9px] font-mono text-zinc-600">
+                      Time at exact point of cervical shrugging.
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              <section>
+                <div
+                  class="border-b border-[#333333] pb-4 mb-6 flex justify-between items-end"
+                >
+                  <div>
+                    <span
+                      class="text-[10px] font-mono tracking-widest text-emerald-500 uppercase"
+                      >TELEMETRY INTAKE</span
+                    >
+                    <h2
+                      class="text-xl font-light text-white tracking-wide mt-1"
+                    >
+                      SESSION LOGGING & AUTO-CALCULATOR
+                    </h2>
+                  </div>
+                  <span
+                    id="intake-status"
+                    class="text-[10px] font-mono text-zinc-500"
+                    >READY</span
+                  >
+                </div>
+
+                <div
+                  class="bg-[#0a0a0a] border border-[#1a1a1a] p-6 space-y-6 transition-colors duration-300"
+                  id="intake-manifold"
+                >
+                  <div
+                    class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-end border-b border-[#1a1a1a] pb-6"
+                  >
+                    <div>
+                      <label
+                        class="block text-[9px] font-mono text-zinc-500 uppercase mb-2"
+                        >Distance (Meters)</label
+                      >
+                      <input
+                        id="calc-dist"
+                        type="number"
+                        placeholder="e.g. 1000"
+                        oninput="calculatePace()"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-[9px] font-mono text-zinc-500 uppercase mb-2"
+                        >Time (MM:SS)</label
+                      >
+                      <input
+                        id="calc-time"
+                        type="text"
+                        placeholder="00:00"
+                        oninput="calculatePace()"
+                      />
+                    </div>
+                    <div class="col-span-2">
+                      <label
+                        class="block text-[9px] font-mono text-zinc-500 uppercase mb-2"
+                        >Calculated Pace (/KM)</label
+                      >
+                      <div
+                        id="calc-result"
+                        class="text-emerald-500 font-mono text-xl font-bold"
+                      >
+                        00:00
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                      <label
+                        class="block text-[9px] font-mono text-zinc-500 uppercase mb-2"
+                        >Session Type</label
+                      >
+                      <select id="log-type" class="cursor-pointer">
+                        <option value="Aerobic Base (Zone 2)">
+                          Aerobic Base (Zone 2)
+                        </option>
+                        <option value="Compromised Running">
+                          Compromised Running
+                        </option>
+                        <option value="Threshold Interval">
+                          Threshold Interval
+                        </option>
+                        <option value="Station Benchmark">
+                          Station Benchmark
+                        </option>
+                      </select>
+                    </div>
+                    <div>
+                      <label
+                        class="block text-[9px] font-mono text-zinc-500 uppercase mb-2"
+                        >Mechanical Drag / Failure Note</label
+                      >
+                      <input
+                        id="log-notes"
+                        type="text"
+                        placeholder="e.g. Nasal fail at 14min, 145BPM"
+                      />
+                    </div>
+                    <div>
+                      <button
+                        onclick="commitLocalLog()"
+                        class="w-full bg-white text-black font-mono text-xs font-bold py-2 hover:bg-zinc-200 transition-colors mt-2"
+                      >
+                        COMMIT LOG TO DATABASE
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section>
+                <div class="border-b border-[#333333] pb-4 mb-6">
+                  <span
+                    class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase"
+                    >LOCAL DATABASE</span
+                  >
+                  <h2 class="text-xl font-light text-white tracking-wide mt-1">
+                    IMMUTABLE TELEMETRY LEDGER
+                  </h2>
+                </div>
+
+                <div class="bg-[#0a0a0a] border border-[#1a1a1a]">
+                  <table class="w-full text-left font-mono text-xs">
+                    <thead>
+                      <tr
+                        class="border-b border-[#333333] bg-[#050505] text-zinc-500"
+                      >
+                        <th class="p-3 font-normal">TIMESTAMP</th>
+                        <th class="p-3 font-normal">OPERATOR</th>
+                        <th class="p-3 font-normal">TYPE</th>
+                        <th class="p-3 font-normal">DIST / TIME</th>
+                        <th class="p-3 font-normal">PACE</th>
+                        <th class="p-3 font-normal">DIAGNOSTICS & NOTES</th>
+                        <th class="p-3 font-normal text-right">ACTION</th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      id="log-table-body"
+                      class="divide-y divide-[#1a1a1a] text-zinc-300"
+                    ></tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+
+            <div
+              class="border-t border-[#333333] pt-6 mt-12 text-center text-[10px] font-mono text-zinc-600 uppercase tracking-widest"
+            >
+              © 2026 The M.O.E. Group. All Rights Reserved.
+            </div>
+          </main>
+        </div>
+      </section>
     </main>
 
     <!-- JAVASCRIPT CONTROL LOGIC -->
     <script>
       // Tab Navigation Logic
       function switchTab(tabId) {
+        const battleButton = document.getElementById("nav-battle-cards");
+        if (
+          tabId === "battle-cards" &&
+          battleButton?.classList.contains("locked")
+        ) {
+          return;
+        }
+
         const tabs = document.querySelectorAll(".tab-content");
         tabs.forEach((tab) => tab.classList.add("hidden"));
 
@@ -1291,6 +1639,228 @@
           "timer-display"
         ).innerText = `${hrs}:${mins}:${secs}`;
       }
+
+      function toggleOperatorInput() {
+        const sel = document.getElementById("operator-id");
+        const custom = document.getElementById("operator-custom");
+        if (sel.value === "OTHERS") {
+          custom.classList.remove("hidden");
+          custom.focus();
+        } else {
+          custom.classList.add("hidden");
+          custom.value = "";
+        }
+      }
+
+      function calculatePace() {
+        const distStr = document.getElementById("calc-dist").value;
+        const timeStr = document.getElementById("calc-time").value;
+        const resultEl = document.getElementById("calc-result");
+
+        if (!distStr || !timeStr || !timeStr.includes(":")) {
+          resultEl.innerText = "00:00";
+          return;
+        }
+
+        const distance = parseFloat(distStr);
+        const timeParts = timeStr.split(":");
+        const minutes = parseFloat(timeParts[0]);
+        const seconds = parseFloat(timeParts[1]);
+
+        if (
+          isNaN(distance) ||
+          isNaN(minutes) ||
+          isNaN(seconds) ||
+          distance === 0
+        ) {
+          resultEl.innerText = "00:00";
+          return;
+        }
+
+        const totalSeconds = minutes * 60 + seconds;
+        const secondsPerKm = totalSeconds / (distance / 1000);
+
+        const paceMins = Math.floor(secondsPerKm / 60);
+        const paceSecs = Math.floor(secondsPerKm % 60);
+
+        resultEl.innerText = `${String(paceMins).padStart(2, "0")}:${String(
+          paceSecs
+        ).padStart(2, "0")}`;
+      }
+
+      function commitLocalLog() {
+        const sel = document.getElementById("operator-id");
+        const custom = document.getElementById("operator-custom");
+        let operatorId = sel.value;
+        if (operatorId === "OTHERS") {
+          const name = custom.value.trim();
+          if (!name) {
+            alert("Please enter an operator name for 'OTHERS'.");
+            custom.focus();
+            return;
+          }
+          operatorId = name;
+        }
+
+        const dist = document.getElementById("calc-dist").value || "N/A";
+        const time = document.getElementById("calc-time").value || "N/A";
+        const pace = document.getElementById("calc-result").innerText;
+        const type = document.getElementById("log-type").value;
+        const notes = document.getElementById("log-notes").value || "Nominal";
+
+        const diagBpm = document.getElementById("diag-bpm").value;
+        const diagLoad = document.getElementById("diag-load").value;
+        const diagTime = document.getElementById("diag-time").value;
+
+        let diagString = "";
+        if (diagBpm) diagString += `Fail BPM: ${diagBpm} | `;
+        if (diagLoad) diagString += `Fail Load: ${diagLoad}KG | `;
+        if (diagTime) diagString += `Fail Grip: ${diagTime} | `;
+
+        const finalNotes = diagString + notes;
+        const date = new Date().toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        const rawMetrics = {
+          dist: document.getElementById("calc-dist").value,
+          time: document.getElementById("calc-time").value,
+          notes: document.getElementById("log-notes").value,
+          diagBpm,
+          diagLoad,
+          diagTime,
+        };
+
+        const entry = {
+          date,
+          operatorId,
+          type,
+          metrics: `${dist}m / ${time}`,
+          pace,
+          finalNotes,
+          rawMetrics,
+        };
+
+        let logs = JSON.parse(localStorage.getItem("sysHrxLogs")) || [];
+        logs.unshift(entry);
+        localStorage.setItem("sysHrxLogs", JSON.stringify(logs));
+
+        renderLogs();
+        clearIntake();
+      }
+
+      function clearIntake() {
+        document.getElementById("calc-dist").value = "";
+        document.getElementById("calc-time").value = "";
+        document.getElementById("log-notes").value = "";
+        document.getElementById("diag-bpm").value = "";
+        document.getElementById("diag-load").value = "";
+        document.getElementById("diag-time").value = "";
+        document.getElementById("calc-result").innerText = "00:00";
+
+        const status = document.getElementById("intake-status");
+        const manifold = document.getElementById("intake-manifold");
+
+        status.innerText = "READY";
+        status.classList.remove("text-blue-500");
+        manifold.classList.remove("border-blue-900/50", "bg-blue-950/10");
+
+        const sel = document.getElementById("operator-id");
+        const custom = document.getElementById("operator-custom");
+        sel.value = "FOUNDER-01";
+        custom.value = "";
+        custom.classList.add("hidden");
+      }
+
+      function renderLogs() {
+        const tbody = document.getElementById("log-table-body");
+        tbody.innerHTML = "";
+
+        const logs = JSON.parse(localStorage.getItem("sysHrxLogs")) || [];
+
+        if (logs.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-zinc-600 italic">No telemetry recorded on local device.</td></tr>`;
+          return;
+        }
+
+        logs.forEach((log, index) => {
+          const safeNotes = (log.finalNotes || "").replace(/"/g, "'");
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+          <td class="p-3">${log.date}</td>
+          <td class="p-3 text-white">${log.operatorId}</td>
+          <td class="p-3">${log.type}</td>
+          <td class="p-3">${log.metrics}</td>
+          <td class="p-3 text-emerald-500">${log.pace}</td>
+          <td class="p-3 text-zinc-400 truncate max-w-[200px] block" title="${safeNotes}">${safeNotes}</td>
+          <td class="p-3 text-right space-x-3">
+            <button onclick="modifyLog(${index})" class="text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-widest">[ MOD ]</button>
+            <button onclick="deleteLog(${index})" class="text-red-500 hover:text-red-400 transition-colors uppercase tracking-widest">[ DEL ]</button>
+          </td>
+        `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      function deleteLog(index) {
+        let logs = JSON.parse(localStorage.getItem("sysHrxLogs")) || [];
+        logs.splice(index, 1);
+        localStorage.setItem("sysHrxLogs", JSON.stringify(logs));
+        renderLogs();
+      }
+
+      function modifyLog(index) {
+        let logs = JSON.parse(localStorage.getItem("sysHrxLogs")) || [];
+        const log = logs[index];
+        if (!log) return;
+
+        const sel = document.getElementById("operator-id");
+        const custom = document.getElementById("operator-custom");
+
+        const known = Array.from(sel.options).some(
+          (o) => o.value === log.operatorId
+        );
+        if (known) {
+          sel.value = log.operatorId;
+          custom.classList.add("hidden");
+          custom.value = "";
+        } else {
+          sel.value = "OTHERS";
+          custom.classList.remove("hidden");
+          custom.value = log.operatorId;
+        }
+
+        document.getElementById("log-type").value = log.type;
+        document.getElementById("calc-dist").value = log.rawMetrics?.dist || "";
+        document.getElementById("calc-time").value = log.rawMetrics?.time || "";
+        document.getElementById("log-notes").value =
+          log.rawMetrics?.notes || "";
+        document.getElementById("diag-bpm").value =
+          log.rawMetrics?.diagBpm || "";
+        document.getElementById("diag-load").value =
+          log.rawMetrics?.diagLoad || "";
+        document.getElementById("diag-time").value =
+          log.rawMetrics?.diagTime || "";
+
+        calculatePace();
+
+        const status = document.getElementById("intake-status");
+        const manifold = document.getElementById("intake-manifold");
+        status.innerText = "MODIFYING ENTRY...";
+        status.classList.add("text-blue-500");
+        manifold.classList.add("border-blue-900/50", "bg-blue-950/10");
+
+        logs.splice(index, 1);
+        localStorage.setItem("sysHrxLogs", JSON.stringify(logs));
+        renderLogs();
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      window.addEventListener("load", renderLogs);
     </script>
   </body>
 </html>
