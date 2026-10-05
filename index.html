@@ -112,13 +112,13 @@
     </style>
   </head>
   <body
-    class="h-full flex flex-col md:flex-row overflow-hidden rounded-none selection:bg-zinc-800 selection:text-white"
+    class="min-h-full flex flex-col md:h-full md:flex-row md:overflow-hidden rounded-none selection:bg-zinc-800 selection:text-white"
   >
     <!-- SIDEBAR NAVIGATION & TELEMETRY -->
     <aside
-      class="w-full md:w-80 bg-[#0a0a0a] border-r border-[#333333] flex flex-col justify-between shrink-0 h-auto md:h-full z-20"
+      class="w-full md:w-80 bg-[#0a0a0a] border-b md:border-b-0 md:border-r border-[#333333] flex flex-col justify-between shrink-0 h-auto md:h-full z-20"
     >
-      <div class="p-6 space-y-6">
+      <div class="p-4 md:p-6 space-y-4 md:space-y-6">
         <!-- System Ident -->
         <div class="border-b border-[#333333] pb-4">
           <div class="flex items-center justify-between">
@@ -201,9 +201,9 @@
         </div>
 
         <!-- Vertical Navigation Menu -->
-        <nav class="space-y-1 pt-2">
+        <nav class="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1 md:block md:mx-0 md:px-0 md:pb-0 md:space-y-1 md:overflow-visible pt-2">
           <div
-            class="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-2 px-1"
+            class="hidden md:block text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-2 px-1"
           >
             Control Modules
           </div>
@@ -211,52 +211,52 @@
           <button
             onclick="switchTab('tactical-engine')"
             id="nav-tactical-engine"
-            class="nav-btn w-full text-left font-mono text-xs py-2.5 px-3 border border-[#333333] bg-[#111111] text-white flex justify-between items-center transition-colors"
+            class="nav-btn shrink-0 whitespace-nowrap gap-3 md:w-full text-left font-mono text-xs py-2.5 px-3 border border-[#333333] bg-[#111111] text-white flex justify-between items-center transition-colors"
           >
             <span>[01] TACTICAL ENGINE</span>
-            <span class="text-[10px] text-zinc-500">PERIODIZATION</span>
+            <span class="hidden md:inline text-[10px] text-zinc-500">PERIODIZATION</span>
           </button>
 
           <button
             onclick="switchTab('battle-cards')"
             id="nav-battle-cards"
-            class="nav-btn w-full text-left font-mono text-xs py-2.5 px-3 border border-transparent text-zinc-400 hover:text-white hover:border-zinc-800 flex justify-between items-center transition-colors"
+            class="nav-btn shrink-0 whitespace-nowrap gap-3 md:w-full text-left font-mono text-xs py-2.5 px-3 border border-transparent text-zinc-400 hover:text-white hover:border-zinc-800 flex justify-between items-center transition-colors"
           >
             <span>[02] BATTLE CARDS</span>
-            <span class="text-[10px] text-zinc-500">STATIONS</span>
+            <span class="hidden md:inline text-[10px] text-zinc-500">STATIONS</span>
           </button>
 
           <button
             onclick="switchTab('doubles-matrix')"
             id="nav-doubles-matrix"
-            class="nav-btn w-full text-left font-mono text-xs py-2.5 px-3 border border-transparent text-zinc-400 hover:text-white hover:border-zinc-800 flex justify-between items-center transition-colors"
+            class="nav-btn shrink-0 whitespace-nowrap gap-3 md:w-full text-left font-mono text-xs py-2.5 px-3 border border-transparent text-zinc-400 hover:text-white hover:border-zinc-800 flex justify-between items-center transition-colors"
           >
             <span>[03] DOUBLES & RULES</span>
-            <span class="text-[10px] text-zinc-500">PENALTIES</span>
+            <span class="hidden md:inline text-[10px] text-zinc-500">PENALTIES</span>
           </button>
 
           <button
             onclick="switchTab('hvo-leverage')"
             id="nav-hvo-leverage"
-            class="nav-btn w-full text-left font-mono text-xs py-2.5 px-3 border border-transparent text-zinc-400 hover:text-white hover:border-zinc-800 flex justify-between items-center transition-colors"
+            class="nav-btn shrink-0 whitespace-nowrap gap-3 md:w-full text-left font-mono text-xs py-2.5 px-3 border border-transparent text-zinc-400 hover:text-white hover:border-zinc-800 flex justify-between items-center transition-colors"
           >
             <span>[04] HVO STRATEGIC OS</span>
-            <span class="text-[10px] text-zinc-500">LEVERAGE</span>
+            <span class="hidden md:inline text-[10px] text-zinc-500">LEVERAGE</span>
           </button>
 
           <button
             onclick="switchTab('telemetry-gates')"
             id="nav-telemetry-gates"
-            class="nav-btn w-full text-left font-mono text-xs py-2.5 px-3 border border-transparent text-zinc-400 hover:text-white hover:border-zinc-800 flex justify-between items-center transition-colors"
+            class="nav-btn shrink-0 whitespace-nowrap gap-3 md:w-full text-left font-mono text-xs py-2.5 px-3 border border-transparent text-zinc-400 hover:text-white hover:border-zinc-800 flex justify-between items-center transition-colors"
           >
             <span>[05] TELEMETRY & GATES</span>
-            <span class="text-[10px] text-zinc-500">PULSE</span>
+            <span class="hidden md:inline text-[10px] text-zinc-500">PULSE</span>
           </button>
         </nav>
       </div>
 
       <!-- System Telemetry Footer -->
-      <div class="p-6 border-t border-[#333333] bg-[#050505] space-y-2">
+      <div class="hidden md:block p-6 border-t border-[#333333] bg-[#050505] space-y-2">
         <div class="flex justify-between text-[10px] font-mono text-zinc-500">
           <span>DEPLOYMENT LOC</span>
           <span class="text-zinc-300">KUALA LUMPUR</span>
@@ -273,7 +273,7 @@
     </aside>
 
     <!-- MAIN WORKSPACE CONTAINER -->
-    <main class="flex-1 overflow-y-auto bg-[#050505] p-4 md:p-8 space-y-8">
+    <main id="main-content" class="flex-1 md:overflow-y-auto bg-[#050505] p-4 md:p-8 space-y-8">
       <!-- MODULE 01: TACTICAL ENGINE & PERIODIZATION -->
       <section id="tab-tactical-engine" class="tab-content space-y-6">
         <!-- Module Header -->
@@ -1490,7 +1490,7 @@
       <!-- MODULE 05: TELEMETRY & GATES -->
       <section id="tab-telemetry-gates" class="tab-content space-y-6 hidden">
         <div class="grid grid-cols-1 xl:grid-cols-[280px_minmax(0,1fr)] gap-6">
-          <aside class="bg-[#020202] border border-[#1a1a1a] p-6">
+          <aside class="bg-[#020202] border border-[#1a1a1a] p-4 md:p-6">
             <div
               class="flex justify-between items-start mb-8 border-b border-[#1a1a1a] pb-4"
             >
@@ -1753,8 +1753,8 @@
                   </h2>
                 </div>
 
-                <div class="bg-[#0a0a0a] border border-[#1a1a1a]">
-                  <table class="w-full text-left font-mono text-xs">
+                <div class="bg-[#0a0a0a] border border-[#1a1a1a] overflow-x-auto">
+                  <table class="w-full min-w-[640px] text-left font-mono text-xs">
                     <thead>
                       <tr
                         class="border-b border-[#333333] bg-[#050505] text-zinc-500"
@@ -1817,6 +1817,12 @@
         if (activeBtn) {
           activeBtn.classList.add("bg-[#111111]", "text-white");
           activeBtn.classList.remove("text-zinc-400", "border-transparent");
+        }
+
+        if (window.innerWidth < 768) {
+          document
+            .getElementById("main-content")
+            .scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }
 
