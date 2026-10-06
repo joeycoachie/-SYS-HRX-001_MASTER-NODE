@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SYS-HRX-001 :: HYROX TACTICAL ENGINE & HVO CONTROL SYSTEM</title>
+    <title>SYS-HRX-001 :: THE M.O.E. METHOD — HYBRID RACE ENGINE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap");
@@ -135,7 +135,10 @@
             SYS-HRX-001
           </h1>
           <p class="text-xs text-zinc-400 font-mono mt-0.5">
-            HYROX TACTICAL ENGINE
+            HYBRID RACE ENGINE
+          </p>
+          <p class="text-[10px] text-zinc-500 font-mono mt-1 tracking-widest uppercase">
+            Powered by The M.O.E. Method
           </p>
         </div>
 
@@ -209,6 +212,15 @@
           </div>
 
           <button
+            onclick="switchTab('method')"
+            id="nav-method"
+            class="nav-btn shrink-0 whitespace-nowrap gap-3 md:w-full text-left font-mono text-xs py-2.5 px-3 border border-transparent text-zinc-400 hover:text-white hover:border-zinc-800 flex justify-between items-center transition-colors"
+          >
+            <span>[00] THE METHOD</span>
+            <span class="hidden md:inline text-[10px] text-zinc-500">M.O.E.</span>
+          </button>
+
+          <button
             onclick="switchTab('tactical-engine')"
             id="nav-tactical-engine"
             class="nav-btn shrink-0 whitespace-nowrap gap-3 md:w-full text-left font-mono text-xs py-2.5 px-3 border border-[#333333] bg-[#111111] text-white flex justify-between items-center transition-colors"
@@ -274,6 +286,110 @@
 
     <!-- MAIN WORKSPACE CONTAINER -->
     <main id="main-content" class="flex-1 md:overflow-y-auto bg-[#050505] p-4 md:p-8 space-y-8">
+      <!-- MODULE 00: THE M.O.E. METHOD -->
+      <section id="tab-method" class="tab-content space-y-6 hidden">
+        <div class="border-b border-[#333333] pb-4 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <span class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase">SYS-HRX-MOD-00</span>
+            <h2 class="text-xl font-light text-white tracking-wide mt-1">THE M.O.E. METHOD</h2>
+          </div>
+          <div class="font-mono text-xs text-zinc-400 bg-[#111111] p-2 border border-[#333333]">
+            <span class="text-white font-bold">MEASURE · OVERRIDE · EXECUTE</span>
+          </div>
+        </div>
+
+        <p class="text-sm text-zinc-300 leading-relaxed max-w-3xl">
+          Most race plans assume a perfect body and a perfect gym. The M.O.E.
+          Method assumes neither. It's a training operating system for hybrid
+          fitness racing: it <span class="text-white">measures</span> where your
+          body is failing, <span class="text-white">overrides</span> the plan
+          the moment it has to, and <span class="text-white">executes</span>
+          every rep with a mechanical reason behind it.
+        </p>
+
+        <div class="bg-[#0a0a0a] border border-[#333333] p-4 md:p-5 font-mono text-xs">
+          <div class="text-[10px] text-zinc-500 uppercase font-bold mb-3">This is built for you if:</div>
+          <ul class="space-y-2 text-zinc-300">
+            <li>→ You train around a niggle (a sore ankle, a cranky lower back, joints that flare) and you're done being told to "just rest".</li>
+            <li>→ You've blown up mid-race on the sled or the wall balls and couldn't say exactly why.</li>
+            <li>→ Your gym doesn't have the race equipment, or the one machine you need is broken.</li>
+            <li>→ You come from Pilates or rehab and want that precision at race intensity.</li>
+            <li>→ You want a plan that tells you when to stop, not only when to push harder.</li>
+          </ul>
+        </div>
+
+        <!-- Three pillars -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono">
+          <div class="bg-[#0a0a0a] border border-[#333333] p-5 space-y-3">
+            <div class="text-4xl font-bold text-white">M</div>
+            <div>
+              <div class="text-sm font-bold text-white uppercase">Measure</div>
+              <div class="text-[11px] text-zinc-500">Find the failure point before it finds you.</div>
+            </div>
+            <p class="text-[11px] text-zinc-400 leading-relaxed">Log every session and track three failure thresholds: the heart rate where nasal breathing breaks, the load where your lower back leaks, and the time until your shoulders shrug.</p>
+            <button onclick="switchTab('telemetry-gates')" class="text-[10px] text-zinc-300 border border-zinc-700 px-2 py-1 hover:border-white hover:text-white uppercase tracking-widest">→ Telemetry &amp; Gates</button>
+          </div>
+          <div class="bg-[#0a0a0a] border border-red-900/60 p-5 space-y-3">
+            <div class="text-4xl font-bold text-red-500">O</div>
+            <div>
+              <div class="text-sm font-bold text-white uppercase">Override</div>
+              <div class="text-[11px] text-zinc-500">Change the plan, never the goal.</div>
+            </div>
+            <p class="text-[11px] text-zinc-400 leading-relaxed">Safety gates end a set the moment form fails. The joint override swaps in joint-friendly variants. Override protocols replace a whole session when your body or your gym won't cooperate.</p>
+            <button onclick="switchTab('battle-cards')" class="text-[10px] text-zinc-300 border border-zinc-700 px-2 py-1 hover:border-white hover:text-white uppercase tracking-widest">→ Override Protocols</button>
+          </div>
+          <div class="bg-[#0a0a0a] border border-[#333333] p-5 space-y-3">
+            <div class="text-4xl font-bold text-white">E</div>
+            <div>
+              <div class="text-sm font-bold text-white uppercase">Execute</div>
+              <div class="text-[11px] text-zinc-500">Every rep has a reason.</div>
+            </div>
+            <p class="text-[11px] text-zinc-400 leading-relaxed">A 20-week periodized engine plus a battle card for every station, each coached in the same five layers, so you always know what to do, why it works, and when to stop.</p>
+            <button onclick="switchTab('tactical-engine')" class="text-[10px] text-zinc-300 border border-zinc-700 px-2 py-1 hover:border-white hover:text-white uppercase tracking-widest">→ Tactical Engine</button>
+          </div>
+        </div>
+
+        <!-- Anatomy of a battle card -->
+        <div class="border border-[#333333] bg-[#0a0a0a]">
+          <div class="p-4 border-b border-[#333333]">
+            <h3 class="text-xs font-mono tracking-widest text-zinc-400 uppercase">Anatomy of a Battle Card // The 5 Coaching Layers</h3>
+          </div>
+          <div class="divide-y divide-[#1a1a1a] font-mono text-xs">
+            <div class="p-4 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
+              <span class="text-white font-bold uppercase">01 · The Skin</span>
+              <span class="md:col-span-3 text-zinc-400">The equipment, load and settings: what the exercise looks like from the outside.</span>
+            </div>
+            <div class="p-4 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
+              <span class="text-white font-bold uppercase">02 · The Iron Skeleton</span>
+              <span class="md:col-span-3 text-zinc-400">The execution: positions, tempo, sets and reps. The structure underneath.</span>
+            </div>
+            <div class="p-4 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
+              <span class="text-white font-bold uppercase">03 · Wolf Cue</span>
+              <span class="md:col-span-3 text-zinc-400">The biomechanics: why it works, which muscles drive it, and which fault it fixes.</span>
+            </div>
+            <div class="p-4 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
+              <span class="text-white font-bold uppercase">04 · Shepherd Cue</span>
+              <span class="md:col-span-3 text-zinc-400">The imagery: one line to repeat in your head mid-set when thinking stops working.</span>
+            </div>
+            <div class="p-4 grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
+              <span class="text-red-400 font-bold uppercase">05 · Safety Gate</span>
+              <span class="md:col-span-3 text-zinc-400">The stop condition: the exact form failure that ends the set or triggers an override.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- The loop -->
+        <div class="border border-[#333333] bg-[#0a0a0a] p-4 md:p-5 space-y-4">
+          <h3 class="text-xs font-mono tracking-widest text-zinc-400 uppercase">The Loop // Run It Every Session</h3>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-3 font-mono text-[11px]">
+            <div class="border-l-2 border-zinc-600 pl-3"><span class="text-white font-bold block">1. MEASURE</span><span class="text-zinc-400">Log the session and the exact point form or breathing failed.</span></div>
+            <div class="border-l-2 border-red-800 pl-3"><span class="text-white font-bold block">2. OVERRIDE</span><span class="text-zinc-400">If a gate tripped or a threshold dropped, pick the override, not more volume.</span></div>
+            <div class="border-l-2 border-zinc-600 pl-3"><span class="text-white font-bold block">3. EXECUTE</span><span class="text-zinc-400">Run the card. Skin, skeleton, cues, gate, every set.</span></div>
+            <div class="border-l-2 border-zinc-600 pl-3"><span class="text-white font-bold block">4. RE-MEASURE</span><span class="text-zinc-400">Log again. The ledger shows whether the fault is shrinking.</span></div>
+          </div>
+        </div>
+      </section>
+
       <!-- MODULE 01: TACTICAL ENGINE & PERIODIZATION -->
       <section id="tab-tactical-engine" class="tab-content space-y-6">
         <!-- Module Header -->
@@ -305,8 +421,7 @@
             </div>
             <div class="text-sm font-bold text-white">ENGINE & ANCHORS</div>
             <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-              Zone 2 expansion, joint bulletproofing, unilateral Wunda Chair &
-              Reformer lumbopelvic alignment.
+              Zone 2 expansion, joint bulletproofing, unilateral Pilates chair &amp; reformer lumbopelvic alignment.
             </p>
           </div>
           <div class="bg-[#111111] border border-[#333333] p-4 space-y-2">
@@ -856,7 +971,7 @@
             </div>
           </div>
 
-          <!-- CARD 2: SKIERG -->
+          <!-- CARD 2: SKI ERGOMETER -->
           <div class="bg-[#0a0a0a] border border-[#333333] p-5 space-y-4">
             <div
               class="flex justify-between items-start border-b border-[#333333] pb-3"
@@ -866,7 +981,7 @@
                   >STATION 01 :: 1000M</span
                 >
                 <h3 class="text-base font-bold text-white font-mono">
-                  SKIERG ENGAGEMENT
+                  SKI ERGOMETER ENGAGEMENT
                 </h3>
               </div>
               <span
@@ -977,7 +1092,7 @@
                 <input type="checkbox" class="mt-0.5 shrink-0" />
                 <span class="text-zinc-300 font-sans"
                   >Mandatory 2-second breather at each 12.5m turn to clear
-                  lactic acid[cite: 1].</span
+                  lactic acid.</span
                 >
               </label>
             </div>
@@ -1053,7 +1168,7 @@
                 <input type="checkbox" class="mt-0.5 shrink-0" />
                 <span class="text-zinc-300 font-sans"
                   >Stand at back of box, lock lats, step backward using
-                  bodyweight[cite: 1].</span
+                  bodyweight.</span
                 >
               </label>
               <label
@@ -1062,7 +1177,7 @@
                 <input type="checkbox" class="mt-0.5 shrink-0" />
                 <span class="text-zinc-300 font-sans"
                   >Keep feet close together to optimize leverage during backward
-                  stride[cite: 1].</span
+                  stride.</span
                 >
               </label>
             </div>
@@ -1139,7 +1254,7 @@
                 <input type="checkbox" class="mt-0.5 shrink-0" />
                 <span class="text-zinc-300 font-sans"
                   >Feet stay wide; fall directly to floor without fighting
-                  gravity[cite: 1].</span
+                  gravity.</span
                 >
               </label>
               <label
@@ -1148,7 +1263,7 @@
                 <input type="checkbox" class="mt-0.5 shrink-0" />
                 <span class="text-zinc-300 font-sans"
                   >Stay low out of burpee before launching into horizontal
-                  jump[cite: 1].</span
+                  jump.</span
                 >
               </label>
             </div>
@@ -1162,8 +1277,8 @@
                 >
                 <span class="text-zinc-200"
                   >Horizontal force vector transfer over vertical jump
-                  height[cite: 1]. Step up with wide base to save hip flexor
-                  effort[cite: 1].</span
+                  height. Step up with wide base to save hip flexor
+                  effort.</span
                 >
               </div>
               <div
@@ -1185,7 +1300,7 @@
                 >SAFETY GATE (QA FAIL)</span
               >
               Bounding jumping out of deep squat causes rapid CNS spike. If
-              heart rate hits redline, step forward out of burpee[cite: 1].
+              heart rate hits redline, step forward out of burpee.
             </div>
 
             <div
@@ -1225,7 +1340,7 @@
                 <input type="checkbox" class="mt-0.5 shrink-0" />
                 <span class="text-zinc-300 font-sans"
                   >Descend into squat while ball is still falling; catch low in
-                  motion[cite: 1].</span
+                  motion.</span
                 >
               </label>
               <label
@@ -1233,8 +1348,8 @@
               >
                 <input type="checkbox" class="mt-0.5 shrink-0" />
                 <span class="text-zinc-300 font-sans"
-                  >Pre-planned rep sets: 40-30-30 or 25-25-25-25[cite: 1]. Do
-                  not go to failure[cite: 1].</span
+                  >Pre-planned rep sets: 40-30-30 or 25-25-25-25. Do
+                  not go to failure.</span
                 >
               </label>
             </div>
@@ -1271,7 +1386,7 @@
                 >SAFETY GATE (QA FAIL)</span
               >
               Catching ball standing still and then squatting doubles the
-              mechanical load[cite: 1]. Force descent during ball drop.
+              mechanical load. Force descent during ball drop.
             </div>
 
             <div
@@ -1412,7 +1527,7 @@
           </div>
           <div class="text-xs font-mono text-zinc-400">
             RULES COMPLIANCE:
-            <span class="text-white">HYROX RULEBOOK 2026</span>
+            <span class="text-white">OFFICIAL RACE RULEBOOK 2026</span>
           </div>
         </div>
 
@@ -1500,7 +1615,7 @@
               </li>
               <li class="p-2 bg-[#050505] border border-zinc-900">
                 <strong class="text-white font-mono"
-                  >Roxzone Navigation:</strong
+                  >Transition Zone Navigation:</strong
                 >
                 Standing around or exiting in wrong direction = Hygiene Time
                 Penalty.
@@ -1583,7 +1698,7 @@
             </h3>
             <p class="text-xs text-zinc-400 font-sans leading-relaxed">
               Boil every operational problem down to its most fundamental
-              truths. In Hyrox, fitness is not an abstract concept; it is oxygen
+              truths. In hybrid racing, fitness is not an abstract concept; it is oxygen
               transport, glycogen management, and fascial force transmission. In
               business, do not copy existing studio packages—unbundle the
               biomechanical result and sell the engine architecture.
@@ -1600,8 +1715,7 @@
             </h3>
             <p class="text-xs text-zinc-400 font-sans leading-relaxed">
               Capital and labor are permissioned leverage. Code, content, and
-              systemized IP are permissionless leverage. Build this HYROX
-              training engine once as a standardized software UI/protocol, then
+              systemized IP are permissionless leverage. Build this race engine once as a standardized software UI/protocol, then
               deploy it infinitely to coaching clients without increasing
               marginal time expenditure.
             </p>
@@ -1639,11 +1753,11 @@
                 1. Structured Borrowing Protocols
               </h4>
               <p class="text-zinc-400 leading-relaxed">
-                Do not build infrastructure from zero. Utilize elite frameworks
-                (STOTT Pilates alignment, Hyrox race data, Herbalife metabolic
-                buffering) and cross-pollinate them. Combine Pilates lumbopelvic
-                stabilization with heavy compromised endurance to create an
-                unassailable category-of-one offering.
+                Do not build infrastructure from zero. Borrow proven frameworks (Pilates lumbopelvic alignment, hybrid-race
+                performance data, metabolic fueling science) and cross-pollinate
+                them. That fusion is The M.O.E. Method: Pilates precision applied
+                under compromised race intensity, an unassailable category-of-one
+                offering.
               </p>
             </div>
             <div class="space-y-2">
@@ -1652,8 +1766,8 @@
               </h4>
               <p class="text-zinc-400 leading-relaxed">
                 When entering high-value operations or studio partnerships, do
-                not offer labor hours. Offer system architecture. Retain
-                ownership of the core digital assets (the UI, the battle cards,
+                not offer labor hours. Offer system architecture. Retain ownership of the core digital assets (The M.O.E. Method,
+                the UI, the battle cards,
                 the periodization engines) while leasing execution rights to
                 host facilities.
               </p>
@@ -1730,7 +1844,7 @@
                 </div>
                 <div class="flex justify-between">
                   <span class="text-zinc-600">BIOMECH BASE:</span>
-                  <span class="text-white">PILATES/STOTT</span>
+                  <span class="text-white">PILATES / M.O.E.</span>
                 </div>
               </div>
             </div>
@@ -1918,14 +2032,24 @@
               </section>
 
               <section>
-                <div class="border-b border-[#333333] pb-4 mb-6">
-                  <span
-                    class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase"
-                    >LOCAL DATABASE</span
-                  >
-                  <h2 class="text-xl font-light text-white tracking-wide mt-1">
-                    IMMUTABLE TELEMETRY LEDGER
-                  </h2>
+                <div class="border-b border-[#333333] pb-4 mb-6 flex flex-col md:flex-row md:items-end justify-between gap-3">
+                  <div>
+                    <span
+                      class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase"
+                      >LOCAL DATABASE</span
+                    >
+                    <h2 class="text-xl font-light text-white tracking-wide mt-1">
+                      IMMUTABLE TELEMETRY LEDGER
+                    </h2>
+                    <p class="text-[10px] font-mono text-zinc-500 mt-1">
+                      Logs live only in this browser. Export a backup regularly.
+                    </p>
+                  </div>
+                  <div class="flex gap-2 font-mono text-[10px] uppercase tracking-widest">
+                    <button onclick="exportLogs()" class="border border-zinc-700 text-zinc-300 px-3 py-2 hover:border-white hover:text-white">[ Export Backup ]</button>
+                    <button onclick="document.getElementById('import-file').click()" class="border border-zinc-700 text-zinc-300 px-3 py-2 hover:border-white hover:text-white">[ Import ]</button>
+                    <input type="file" id="import-file" accept="application/json,.json" class="hidden" onchange="importLogs(this)" />
+                  </div>
                 </div>
 
                 <div class="bg-[#0a0a0a] border border-[#1a1a1a] overflow-x-auto">
@@ -2290,7 +2414,76 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      window.addEventListener("load", renderLogs);
+      // Backup: export / import / restore link
+      function mergeLogs(incoming) {
+        const logs = JSON.parse(localStorage.getItem("sysHrxLogs")) || [];
+        const key = (l) => [l.date, l.operatorId, l.type, l.finalNotes].join("|");
+        const seen = new Set(logs.map(key));
+        const fresh = incoming.filter((l) => l && l.date && !seen.has(key(l)));
+        const merged = logs.concat(fresh);
+        merged.sort((a, b) => logTime(b) - logTime(a));
+        localStorage.setItem("sysHrxLogs", JSON.stringify(merged));
+        renderLogs();
+        return fresh.length;
+      }
+
+      // Stored dates have no year ("Sep 20, 03:54 PM"); one that would land
+      // in the future must belong to last year.
+      function logTime(log) {
+        const now = new Date();
+        const [md, hm] = log.date.split(", ");
+        let t = Date.parse(`${md}, ${now.getFullYear()} ${hm || ""}`);
+        if (isNaN(t)) return 0;
+        if (t > now.getTime() + 86400000) {
+          t = new Date(t).setFullYear(now.getFullYear() - 1);
+        }
+        return t;
+      }
+
+      function exportLogs() {
+        const logs = localStorage.getItem("sysHrxLogs") || "[]";
+        const blob = new Blob([logs], { type: "application/json" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `moe-telemetry-backup-${new Date().toISOString().slice(0, 10)}.json`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
+
+      function importLogs(input) {
+        const file = input.files[0];
+        if (!file) return;
+        file.text().then((text) => {
+          try {
+            const added = mergeLogs(JSON.parse(text));
+            alert(`Imported ${added} new log(s).`);
+          } catch (e) {
+            alert("That file isn't a valid telemetry backup.");
+          }
+          input.value = "";
+        });
+      }
+
+      // A restore link carries logs in the URL fragment (#restore=...),
+      // which browsers never send to the server.
+      function restoreFromLink() {
+        if (!location.hash.startsWith("#restore=")) return;
+        try {
+          const b64 = location.hash.slice(9).replace(/-/g, "+").replace(/_/g, "/");
+          const bytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+          const added = mergeLogs(JSON.parse(new TextDecoder().decode(bytes)));
+          switchTab("telemetry-gates");
+          alert(`Restored ${added} log(s) to this device.`);
+        } catch (e) {
+          alert("Restore link is damaged. Nothing was changed.");
+        }
+        history.replaceState(null, "", location.pathname + location.search);
+      }
+
+      window.addEventListener("load", () => {
+        renderLogs();
+        restoreFromLink();
+      });
     </script>
   </body>
 </html>
